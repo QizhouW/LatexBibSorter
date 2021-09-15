@@ -1,0 +1,127 @@
+% ------ Main template ------- %
+%\documentclass{WileyMSP-template}
+\documentclass[two-columns]{nature}
+
+% Packages
+\usepackage{graphicx,color}
+\usepackage{textcomp} % Fixes gensym warnings
+
+\usepackage{siunitx} % Proper number, unit spacing
+\usepackage{amsmath,physics}
+
+% ----- Bibliographic data -------- %
+\usepackage[backend=biber,bibencoding=utf8, style=nature, url=false,
+ isbn=false, doi=false, maxcitenames=30, maxnames=30]{biblatex}
+\addbibresource{ref.bib}
+% natbib is for Wiley class
+%\usepackage[square,sort,comma,numbers,super]{natbib}
+
+% ---- Appearance --- %
+%. linenumbers
+\usepackage{lineno}
+\linenumbers
+\usepackage{showlabels}
+
+% For Wiley class
+%\pagestyle{fancy}
+%\rhead{\includegraphics[width=2.5cm]{vch-logo.png}}
+%\cfoot{\thepage}
+
+% ---- Annotations ---- %
+\newcommand{\rev}[1]{\textcolor{red}{#1}}
+\newcommand{\done}[1]{\textcolor{green!50!black}{#1}}
+
+% ---- Authors list (nature class)--- %
+\author{M. Makarenko$^{1\dag}$,  Q. Wang$^{1\dag}$,  A.
+Burguete-Lopez$^{1\dag}$,  F. Getman$^{1\dag}$,
+\& A. Fratalocchi$^{1*}$}
+
+% \author{M. Makarenko$^{1\dag}$}, \author{Q. Wang$^{1\dag}$, A.
+% 	Burguete-Lopez$^{1\dag}$, F. Getman$^{1\dag}$ \& A.
+% 	Fratalocchi$^{1*}$} % Wiley authors
+
+\begin{document}
+\title{Robust and scalable flat-optics on flexible substrates via evolutionary neural networks}
+
+\maketitle
+
+% ---- Affiliations, nature class requires \item
+\begin{affiliations}
+\item PRIMALIGHT, Faculty of Electrical Engineering; Applied
+	Mathematics and Computational Science, King Abdullah University of Science and
+	Technology, Thuwal 23955-6900, Saudi Arabia\\ $^\dag$ First author with equal
+	contribution.\\ $^*$ Corresponding author. Email:
+	andrea.fratalocchi@kaust.edu.sa.
+\end{affiliations}
+
+% 3 to 7 keywords
+%\keywords{flexible flat-optics, robust design, neural networks} % Wiley class
+
+\begin{abstract}
+\rev{Over the past twenty years flat-optics emerged as a promising light manipulation technology, surpassing conventional bulk optics in performance, versatility and miniaturization capabilities. As of today
+    however, this technology has yet to find widespread commercial applications. One of the challenges is obtaining scalable and highly efficient designs that can withstand the
+     fabrication errors associated with nanoscale manufacturing
+    techniques. This problem becomes more severe in flexible structures, in which deformations appear naturally when flat-optics structures are conformally applied to, e.g., bio-compatible substrates. In this work, we present an inverse design platform that enables the
+    fast design of flexible flat-optics that maintain high performance under
+    deformations of their original geometry. The platform leverages on suitably
+    designed evolutionary large-scale optimizers, equipped with fast-trained neural network
+    predictors based on encoder-decoder architectures. This approach supports the implementation of flexible flat-optics robust to both fabrication errors or user
+    defined perturbation stress. We validate this method by a series of experiments in which we realize broadband flexible light polarizers, which maintain an average
+    polarization efficiency of 80\% over 200~nm bandwidths when measured under
+    large mechanical deformations. These results could be helpful for the realization of a robust class of flexible flat-optics for bio-sensing, imaging and bio-medical devices.} \end{abstract}
+
+
+\section*{Introduction}
+Flat-optics engineers surface materials supporting
+sharp changes of phase, polarization, or direction of electromagnetic (EM)
+waves~\cite{yu2014flat}, controlling light propagation for diverse
+applications ranging from imaging ~\cite{banerji2019imaging, aflatouni2015nanophotonic}, to
+optical communications~\cite{sun2016optical, wang2018nanophotonic}, energy
+harvesting~\cite{guo2014metallic, baranov2019nanophotonic}, and
+computing~\cite{zhu2017plasmonic, zhou2020flat}. While in the past flat-optics design was mainly driven by intuition, recent years have seen
+large interests growing in the study of inverse design techniques. These
+methods are based on various applications of optimization theory and, more
+recently, artificial intelligence, opening up promising approaches to implement
+flat-optics devices that could overcome the challenges that are not yet addressed by intuition-driven
+realizations~\cite{molesky2018inverse}.\\
+Two main classes of inverse design
+techniques based on optimization theory are genetic methods and topology optimization. The former imitates
+biological evolution, and exploits the dynamics of a suitably defined set of
+parameters that encompass genetic reproduction steps~\cite{goldberg1988genetic}.
+These algorithms iterate populations in the design space based on a pre-defined
+fitness function representing the design
+objective.
+During progressive iterations, candidate structures with larger performance spontaneously emerge from random genetic
+mutations and cross-over~\cite{wiecha2017evolutionary,huntington2014subwavelength,feichtner2012evolutionary}.
+Topology optimization, on the contrary, exploits discrete material
+distributions, such as, e.g., binary structures~\cite{jensen2005topology}. After an iterative refinement, the distribution of materials evolves and clear boundaries appear, defining optimal
+designs~\cite{sigmund2013topology}. Topology optimization has been successfully employed to
+implement metalenses~\cite{otomori2017topology, phan2019high,bruner2021},
+polarizers~\cite{frandsen2016inverse, shen2014ultra, shen2015integrated}, and wavelength
+splitters~\cite{piggott2015inverse}.
+More recent inverse design techniques exploit statistical learning models based on deep learning neural
+networks~\cite{lecun2015deep,leung1991complex, leonard1990improvement}. These techniques have
+been successfully applied in the design of nanophotonics chiral metamirrors ~\cite{ma2018deep},
+diffractive metagratings~\cite{inampudi2018neural}, plasmonic waveguides ~\cite{zhang2019efficient},
+and configurable plasmonic-PCM metasurfaces~\cite{kiarashinejad2020deep}.\\
+\rev{Figure~\ref{merit}
+shows a quantitative overview of the state-of-the-art performances reported with these methods. We rank each method based on parameters that provide the largest possible overlap with results available in the literature. In the case of optimization techniques ~\cite{borel2004topology,shen2014ultra, piggott2015inverse, shen2015integrated, frellsen2016topology,frandsen2016inverse, xiao2016diffractive, sell2017periodic, yu2017genetically,phan2019high}  (Figure~\ref{merit}a), results are illustrated in terms of working bandwidth
+and efficiency (transmission, reflection, scattering, etc.), while the performance of DL methods ~\cite{inampudi2018neural,zhang2019efficient,liu2018generative,nadell2019deep,peurifoy2018nanophotonic,kiarashinejad2020deep,qu2019migrating,tahersima2018deep,malkiel2018plasmonic,liu2018training,explainable} (Figure~\ref{merit}b) is classified in terms of network size
+and mean squared error (MSE) of the designs obtained with these approaches. This research, while still young in age, reports promising outcomes with many techniques already capable of designing complex devices with efficiencies above 80\%, over optical bandwidths larger than $200$~nm.}\\
+\rev{The majority of the devices implemented in Fig.~\ref{merit} work on rigid substrates such as glass,
+quartz or sapphire~\cite{yu2014flat,StanislavB.Glybovski2016}. Another class of devices, which is recently stirring conspicuous interests, is represented by flat-optics realized on flexible materials~\cite{Walia2015,Chen2020,Burch2017,Burch2019}. Flexibility allows conformal integration on general surfaces, including bio-compatible materials, opening a wide range of applications in integrated optoelectronics for sensing and soft
+medical devices, such as contact lenses~\cite{Xu2011,Hokari2018,Karepov2020,DiFalco2010}. A major hurdle in this field are performances degradation when the device operates in deformed conditions. In these cases, performances worsen considerably from ideal values of non-deformed configurations. Studies on Au nanorod arrays~\cite{ee2016tunable}, for example, reported diffraction efficiency dropping from above 90\% to below 40\% when the nanorods stretch ratio changed from ideal values. While there is currently no general technique that could solve this problem, artificial intelligence methods such as the ones reported in Fig.~\ref{merit} can be adapted to address this issue.\\ In this work, we propose to generalize a flat-optics inverse design platform based on nanoscale neural network universal approximators~\cite{makarenko2020generalized,getman2020broadband}, and develop a neural prediction unit that takes into account fabrication robustness for the design of flexible flat-optics at visible frequency and in purely dielectric materials. We validate these results by implementing a new class of flexible flat-optics components with almost negligible variations of optical response to deformations. This design platform is general and can be applied to a wide variety of flat-optics components and systems, opening to flexible flat-optics on transparent substrates with robust performances.}
+
+
+\printbibliography
+% -------- All the figures ------------- %
+\clearpage
+
+
+
+
+\end{document}
+
+
+
+
